@@ -1,6 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:serag_app/presentation/pages/added.dart';
 import 'package:serag_app/presentation/pages/home.dart';
 import 'package:serag_app/presentation/pages/splash.dart';
 import 'package:serag_app/presentation/pages/thekr.dart';
@@ -9,7 +10,7 @@ void main() {
   runApp
   (
     DevicePreview(
-      enabled:true,
+      enabled:false,
       builder: (context)=> const MyApp(),
     )
   );
@@ -30,7 +31,7 @@ class _MyAppState extends State<MyApp> {
       splitScreenMode: true,
       builder: (_, child) {
         return MaterialApp(
-          home: ThekrPAge(),
+          home: AddedPAge(),
         );
       },
     );

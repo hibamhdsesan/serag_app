@@ -3,6 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serag_app/core/constants/app_colors.dart';
 import 'package:serag_app/core/constants/app_texts.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:flutter/material.dart' show MaterialStateProperty;
+
 
 class ThekrPAge extends StatefulWidget {
   const ThekrPAge({super.key});
@@ -13,6 +16,29 @@ class ThekrPAge extends StatefulWidget {
 
 class _ThekrPAgeState extends State<ThekrPAge> {
   String selectedThekrValue = "";
+ DateTime? startDate;
+ DateTime? endDate;
+ double currentValue = 0;
+ final TextEditingController targetCountController = TextEditingController();
+
+
+   final TextEditingController thekrController = TextEditingController();
+  final TextEditingController dateRangeController = TextEditingController();
+
+  @override
+  void dispose() {
+    thekrController.dispose();
+    dateRangeController.dispose();
+    super.dispose();
+  }
+
+  @override
+void initState() {
+  super.initState();
+  targetCountController.text = currentValue.round().toString();
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,87 +176,166 @@ class _ThekrPAgeState extends State<ThekrPAge> {
               child: IconButton(
                   onPressed: () {
                     showModalBottomSheet(
-                      context: context,
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(25)),
+  context: context,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+  ),
+  isScrollControlled: true,
+  builder: (context) {
+    double localCurrentValue = currentValue; // نسخة محلية
+
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setModalState) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Container(
+            height: 500.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25),
+                topRight: Radius.circular(25),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 20),
+                Text("الذكر", style: TextStyle(color: Colors.white, fontSize: 18)),
+                SizedBox(height: 10),
+                Container(
+                  width: 266,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: DropdownButtonFormField<String>(
+                    value: selectedThekrValue.isEmpty ? null : selectedThekrValue,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.arrow_drop_down),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                    ),
+                    items: AppTexts.theckeList.map((item) {
+                      return DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(item, textAlign: TextAlign.right),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setModalState(() {
+                        selectedThekrValue = value!;
+                        thekrController.text = value;
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text("مدة الختمة", style: TextStyle(color: Colors.white, fontSize: 18)),
+                SizedBox(height: 10),
+                Container(
+                  width: 266,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TextField(
+                    controller: dateRangeController,
+                    readOnly: true,
+                    textAlign: TextAlign.right,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      prefixIcon: InkWell(
+                        onTap: () async {
+                          final pickedRange = await showDateRangePicker(
+                            context: context,
+                            firstDate: DateTime(2023),
+                            lastDate: DateTime(2030),
+                          );
+                          if (pickedRange != null) {
+                            setModalState(() {
+                              startDate = pickedRange.start;
+                              endDate = pickedRange.end;
+                              dateRangeController.text =
+                                  '${startDate!.day}/${startDate!.month}/${startDate!.year} إلى ${endDate!.day}/${endDate!.month}/${endDate!.year}';
+                            });
+                          }
+                        },
+                        child: Icon(Icons.calendar_today),
                       ),
-                      isScrollControlled: true,
-                      builder: (context) {
-                        return FractionallySizedBox(
-                          child: Container(
-                            height: 434.h,
-                             width: 365.w,
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(25),
-                                  topRight: Radius.circular(25)),
-                            ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text("العدد المفروض", style: TextStyle(color: Colors.white, fontSize: 18)),
+                SliderTheme(
+                  data: SliderTheme.of(context).copyWith(
+                    showValueIndicator: ShowValueIndicator.always,
+                    valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+                    valueIndicatorTextStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+                    overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
+                  ),
+                  child: Slider(
+                    value: localCurrentValue,
+                    min: 0,
+                    max: 100,
+                    divisions: 100,
+                    label: localCurrentValue.round().toString(),
+                    onChanged: (value) {
+                      setModalState(() {
+                        localCurrentValue = value;
+                        currentValue = value; 
+                        targetCountController.text = value.round().toString();
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(height: 26.h,),
 
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("الذكر",style: TextStyle(color: Colors.white),),
-                                Container(
-                                  width: 266.w,
-                                  height:37.h ,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:BorderRadius.circular(10) 
-                                  ),
-                                  child: TextField(
-                                    readOnly: true,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      prefixIcon: PopupMenuButton<String>(
-                                        icon: Icon(Icons.arrow_drop_down),
-                                        onSelected: (value){
-                                          setState(() {
-                                            selectedThekrValue=value;
-                                          });
-                                        },
-                                        itemBuilder: (context) => AppTexts.theckeList.map((item) => PopupMenuItem(value: item,child: Text(item),)).toList(),
-                                  
-                                      )
-                                    ),
-                                    controller: TextEditingController(text:selectedThekrValue),
-                                  ),
-                                ),
+                 Container(
+                  width: 123.w,
+                  height: 28.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xff7D6358),
+                  ),
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Icon(Icons.share,color: Colors.white,),
+                      Text("مشاركة",style: TextStyle(color: Colors.white,fontSize: 15.sp),),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 26.h,),
 
-                                Text("مدة الختمة",style: TextStyle(color: Colors.white),),
-                                Container(
-                                  width: 266.w,
-                                  height:37.h ,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:BorderRadius.circular(10) 
-                                  ),
-                                  child: TextField(
-                                    readOnly: true,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      prefixIcon: PopupMenuButton<String>(
-                                        icon: Icon(Icons.arrow_drop_down),
-                                        onSelected: (value){
-                                          setState(() {
-                                            selectedThekrValue=value;
-                                          });
-                                        },
-                                        itemBuilder: (context) => AppTexts.theckeList.map((item) => PopupMenuItem(value: item,child: Text(item),)).toList(),
-                                  
-                                      )
-                                    ),
-                                    controller: TextEditingController(text:selectedThekrValue),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
+                Container(
+                  width: 296.w,
+                  height: 42.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppColors.box,
+                  ),
+                  child: Center(child: Text("إضافة",style: TextStyle(color: AppColors.textButton,fontSize: 25.sp),),),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  },
+);
+
                   },
                   icon: Icon(
                     Icons.add,
