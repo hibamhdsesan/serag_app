@@ -34,143 +34,235 @@ class _AddedPAgeState extends State<AddedPAge> {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Column(
-          children: [
-            SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+                height: MediaQuery.of(context).size.height,
+
+            child: Column(
+              children: [
+                SafeArea(
+  child: Container(
+    height: 80.h, 
+    child: Stack(
+      children: [
+        
+        Positioned(
+          left: 0,
+          top: 25,
+          child: IconButton(
+            icon: Icon(Icons.arrow_back, color: AppColors.textButton),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 13),
+                child: Image.asset("images/floral.png"),
+              ),
+              SizedBox(width: 10),
+              Padding(
+                padding: const EdgeInsets.only(top: 13),
+                child: Text(
+                  AppTexts.appName,
+                  style: TextStyle(color: Colors.black, fontSize: 30),
+                ),
+              ),
+              SizedBox(width: 10),
+              Padding(
+                padding: const EdgeInsets.only(top: 13),
+                child: Image.asset("images/floral2.png"),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 74, left: 18, right: 19),
+                  child: Container(
+                    width: 323.w,
+                    height: 608.h,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 33,right: 25),
+                            child: Text(
+                              "عدد الأشخاص",
+                              style: TextStyle(color: AppColors.textTherdly, fontSize: 15.sp),
+                            ),
+                          
+                        ),
+                        SizedBox(height: 20.h,),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 25),
+                          child: Container(
+                            width: 258.w,
+                            height: 42.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xff9d9d9d),
+                            ),
+                            child: TextField(
+                              readOnly: false,
+                              controller: personCountController,
+                              decoration: InputDecoration(
+                          
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 25.h,),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 25),
+                          child: Text(
+                            " أسماء المشتركين",
+                            style: TextStyle(color: AppColors.textTherdly, fontSize: 15.sp),
+                          ),
+                        ),
+                        SizedBox(height: 20.h,),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 25),
+                          child: Container(
+                            width: 258.w,
+                            height: 42.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xff9d9d9d),
+                            ),
+                            child: TextField(
+                              readOnly: false,
+                              controller: personNamesController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 29.h,),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 25),
+                          child: Text(
+                            " عدد الأجزاء لكل شخص",
+                            style: TextStyle(color: AppColors.textTherdly, fontSize: 15.sp),
+                          ),
+                        ),
+            
+            Padding(
+              padding: const EdgeInsets.only(right: 23),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 110, top: 23),
-                    child: Image(image: AssetImage("images/floral.png")),
+                   Text(
+                    "1",
+                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
                   ),
-                  Text(
-                    AppTexts.appName,
-                    style: TextStyle(color: Colors.black, fontSize: 30),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 114, top: 23),
-                    child: Image(image: AssetImage("images/floral2.png")),
+                  
+                  Checkbox(
+                    value: selectedCount == 1,
+                    onChanged: (val) {
+                      setState(() {
+                        selectedCount = 1;
+                      });
+                    },
+                    checkColor: AppColors.box,
+                    fillColor: MaterialStateProperty.all(Color(0xff9d9d9d)),
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 74, left: 18, right: 19,bottom: 18),
-              child: Container(
-                width: 323.w,
-                height: 608.h,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "عدد الأشخاص",
-                      style: TextStyle(color: Colors.white, fontSize: 15.sp),
-                    ),
-                    Container(
-                      width: 258.w,
-                      height: 42.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColors.box,
-                      ),
-                      child: TextField(
-                        readOnly: false,
-                        controller: personCountController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      " أسماء المشتركين",
-                      style: TextStyle(color: Colors.white, fontSize: 15.sp),
-                    ),
-                    Container(
-                      width: 258.w,
-                      height: 42.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColors.box,
-                      ),
-                      child: TextField(
-                        readOnly: false,
-                        controller: personNamesController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      " عدد الأجزاء لكل شخص",
-                      style: TextStyle(color: Colors.white, fontSize: 15.sp),
-                    ),
-
-CheckboxListTile(
-  title: Text("1"),
-  value: selectedCount == 1,
-  onChanged: (val) {
-    setState(() {
-      selectedCount = 1;
-    });
-  },
-  controlAffinity: ListTileControlAffinity.trailing,   
-  checkColor: AppColors.box,
-  fillColor:MaterialStateProperty.all(Color(0xff9d9d9d)),  
-),
-
-            CheckboxListTile(
-  title: Text("2"),
-  value: selectedCount == 2,
-  onChanged: (val) {
-    setState(() {
-      selectedCount = 2;
-    });
-  },
-  controlAffinity: ListTileControlAffinity.trailing,
-  checkColor: AppColors.box,
-  fillColor:MaterialStateProperty.all(Color(0xff9d9d9d)),
-),
-
-CheckboxListTile(
-  title: Text("3"),
-  value: selectedCount == 3,
-  onChanged: (val) {
-    setState(() {
-      selectedCount = 3;
-    });
-  },
-  controlAffinity: ListTileControlAffinity.trailing, 
- checkColor: AppColors.box,
-  fillColor:MaterialStateProperty.all(Color(0xff9d9d9d)),
-),
-            SizedBox(height: 20),
-           
-                    Container(
-                      width: 296.w,
-                      height: 42.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColors.box,
-                      ),
-                      child: Center(
-                        child: Text(
-                          "إضافة",
-                          style: TextStyle(
-                              color: AppColors.textButton, fontSize: 25.sp),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              padding: const EdgeInsets.only(right: 23),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                   Text(
+                    "2",
+                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                  ),
+                  
+                  Checkbox(
+                    value: selectedCount == 2,
+                    onChanged: (val) {
+                      setState(() {
+                        selectedCount = 2;
+                      });
+                    },
+                    checkColor: AppColors.box,
+                    fillColor: MaterialStateProperty.all(Color(0xff9d9d9d)),
+                  ),
+                ],
               ),
             ),
-          ],
+            Padding(
+              padding: const EdgeInsets.only(right: 23),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                   Text(
+                    "3",
+                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                  ),
+                  
+                  Checkbox(
+                    value: selectedCount == 3,
+                    onChanged: (val) {
+                      setState(() {
+                        selectedCount = 3;
+                      });
+                    },
+                    checkColor: AppColors.box,
+                    fillColor: MaterialStateProperty.all(Color(0xff9d9d9d)),
+                  ),
+                ],
+              ),
+            ),
+
+            
+                
+                SizedBox(height: 20),
+               
+                        Padding(
+                          padding: const EdgeInsets.only(right: 33),
+                          child: Container(
+                            width: 257.w,
+                            height: 42.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColors.box,
+                            ),
+                            child:  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Icon(Icons.share,color: AppColors.textButton,),
+                      Text("إنشاء و مشاركة",style: TextStyle(color: AppColors.textButton,fontSize: 25.sp),),
+                    ],
+                  ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serag_app/presentation/pages/added.dart';
 import 'package:serag_app/presentation/pages/home.dart';
+import 'package:serag_app/presentation/pages/khetma.dart';
+import 'package:serag_app/presentation/pages/privateKhetma.dart';
 import 'package:serag_app/presentation/pages/splash.dart';
 import 'package:serag_app/presentation/pages/thekr.dart';
 
@@ -31,7 +33,7 @@ class _MyAppState extends State<MyApp> {
       splitScreenMode: true,
       builder: (_, child) {
         return MaterialApp(
-          home: AddedPAge(),
+          home: KhetmaPAge(),
         );
       },
     );

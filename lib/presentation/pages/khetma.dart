@@ -7,14 +7,14 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter/material.dart' show MaterialStateProperty;
 
 
-class ThekrPAge extends StatefulWidget {
-  const ThekrPAge({super.key});
+class KhetmaPAge extends StatefulWidget {
+  const KhetmaPAge({super.key});
 
   @override
-  State<ThekrPAge> createState() => _ThekrPAgeState();
+  State<KhetmaPAge> createState() => _KhetmaPAgeState();
 }
 
-class _ThekrPAgeState extends State<ThekrPAge> {
+class _KhetmaPAgeState extends State<KhetmaPAge> {
   String selectedThekrValue = "";
  DateTime? startDate;
  DateTime? endDate;
@@ -71,7 +71,7 @@ void initState() {
                   Padding(
                     padding: const EdgeInsets.only(top: 18),
                     child: Text(
-                      "جلسات الذكر",
+                      " الختمات",
                       style: TextStyle(color: Colors.black, fontSize: 30),
                     ),
                   ),
@@ -106,7 +106,7 @@ void initState() {
                                   child: Container(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      "صلاة على النبي",
+                                      "  ختمة بنية الشفاء",
                                       style: TextStyle(fontSize: 25.sp),
                                     ),
                                   ),
@@ -186,7 +186,7 @@ void initState() {
   ),
   isScrollControlled: true,
   builder: (context) {
-    double localCurrentValue = currentValue; // نسخة محلية
+    double localCurrentValue = currentValue;   
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setModalState) {
@@ -209,7 +209,7 @@ void initState() {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
-                Text("الذكر", style: TextStyle(color: Colors.white, fontSize: 18)),
+                Text("النية", style: TextStyle(color: Colors.white, fontSize: 18)),
                 SizedBox(height: 10),
                 Container(
                   width: 266,
