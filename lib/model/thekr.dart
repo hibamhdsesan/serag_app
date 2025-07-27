@@ -12,13 +12,22 @@ int? parseInt(dynamic value) {
 
 DateTime? _parseDate(dynamic value) {
   if (value == null) return null;
-  if (value is int) return DateTime.fromMillisecondsSinceEpoch(value);
-  if (value is String) {
-    final parsed = int.tryParse(value);
-    if (parsed != null) return DateTime.fromMillisecondsSinceEpoch(parsed);
+
+  if (value is int) {
+    return DateTime.fromMillisecondsSinceEpoch(value);
   }
+
+  if (value is String) {
+    try {
+      return DateTime.parse(value); 
+    } catch (_) {
+      return null;
+    }
+  }
+
   return null;
 }
+
 
 class ThekrModel {
   final int? id;

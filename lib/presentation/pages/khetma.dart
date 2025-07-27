@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serag_app/core/constants/app_colors.dart';
 import 'package:serag_app/core/constants/app_texts.dart';
+import 'package:serag_app/presentation/pages/privateKhetma.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter/material.dart' show MaterialStateProperty;
 
@@ -18,8 +20,9 @@ class _KhetmaPAgeState extends State<KhetmaPAge> {
   String selectedThekrValue = "";
  DateTime? startDate;
  DateTime? endDate;
- double currentValue = 0;
- final TextEditingController targetCountController = TextEditingController();
+//  double currentValue = 0;
+//  final TextEditingController targetCountController = TextEditingController();
+  String selectedType="";
 
 
    final TextEditingController thekrController = TextEditingController();
@@ -35,7 +38,7 @@ class _KhetmaPAgeState extends State<KhetmaPAge> {
   @override
 void initState() {
   super.initState();
-  targetCountController.text = currentValue.round().toString();
+  // targetCountController.text = currentValue.round().toString();
 }
 
 
@@ -186,7 +189,7 @@ void initState() {
   ),
   isScrollControlled: true,
   builder: (context) {
-    double localCurrentValue = currentValue;   
+    // double localCurrentValue = currentValue;   
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setModalState) {
@@ -225,7 +228,7 @@ void initState() {
                       prefixIcon: Icon(Icons.arrow_drop_down),
                       contentPadding: EdgeInsets.symmetric(horizontal: 12),
                     ),
-                    items: AppTexts.theckeList.map((item) {
+                    items: AppTexts.khetmaList.map((item) {
                       return DropdownMenuItem<String>(
                         value: item,
                         child: Text(item, textAlign: TextAlign.right),
@@ -277,32 +280,42 @@ void initState() {
                   ),
                 ),
                 SizedBox(height: 20),
-                Text("العدد المفروض", style: TextStyle(color: Colors.white, fontSize: 18)),
-                SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    showValueIndicator: ShowValueIndicator.always,
-                    valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-                    valueIndicatorTextStyle: TextStyle(
-                      color: Colors.white,
-                    ),
-                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
-                    overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
-                  ),
-                  child: Slider(
-                    value: localCurrentValue,
-                    min: 0,
-                    max: 100,
-                    divisions: 100,
-                    label: localCurrentValue.round().toString(),
-                    onChanged: (value) {
-                      setModalState(() {
-                        localCurrentValue = value;
-                        currentValue = value; 
-                        targetCountController.text = value.round().toString();
-                      });
-                    },
-                  ),
-                ),
+                 
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceAround,
+  children: [
+    Row(
+      children: [
+        Text("فجرية", style: TextStyle(color: Colors.white, fontSize: 16.sp)),
+        Checkbox(
+          value: selectedType == "فجرية",
+          onChanged: (value) {
+            setModalState(() {
+              selectedType = value! ? "فجرية" : "عادية";
+            });
+          },
+          checkColor: AppColors.box,
+          fillColor: MaterialStateProperty.all(Colors.white),
+        ),
+      ],
+    ),
+    Row(
+      children: [
+        Text("ذات أولوية", style: TextStyle(color: Colors.white, fontSize: 16.sp)),
+        Checkbox(
+          value: selectedType == "ذات أولوية",
+          onChanged: (value) {
+            setModalState(() {
+              selectedType = value! ? "ذات أولوية" : "عادية";
+            });
+          },
+          checkColor: AppColors.primary,
+          fillColor: MaterialStateProperty.all(Colors.white),
+        ),
+      ],
+    ),
+  ],
+),
                 SizedBox(height: 26.h,),
 
                  Container(
@@ -322,14 +335,30 @@ void initState() {
                 ),
                 SizedBox(height: 26.h,),
 
-                Container(
-                  width: 296.w,
-                  height: 42.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.box,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => PrivateKhetma(
+      purpose: selectedThekrValue,
+      startDate: startDate!,
+      endDate: endDate!,
+      type: selectedType, 
+    ),
+  ),
+);
+
+                  },
+                  child: Container(
+                    width: 296.w,
+                    height: 42.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.box,
+                    ),
+                    child: Center(child: Text("إضافة",style: TextStyle(color: AppColors.textButton,fontSize: 25.sp),),),
                   ),
-                  child: Center(child: Text("إضافة",style: TextStyle(color: AppColors.textButton,fontSize: 25.sp),),),
                 ),
               ],
             ),

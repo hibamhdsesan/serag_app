@@ -4,7 +4,12 @@ import 'package:serag_app/core/constants/app_colors.dart';
 import 'package:serag_app/core/constants/app_texts.dart';
 
 class PrivateKhetma extends StatefulWidget {
-  const PrivateKhetma({super.key});
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final String type;
+  final String purpose;
+
+  const PrivateKhetma({super.key,required this.type,required this.purpose,required this.startDate,required this.endDate});
 
   @override
   State<PrivateKhetma> createState() => _PrivateKhetmaState();

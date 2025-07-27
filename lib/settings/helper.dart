@@ -1,4 +1,4 @@
-String formatNullableDate(DateTime? dateTime) {
-  if (dateTime == null) return 'لا يوجد تاريخ';
-  return "${dateTime.year}-${dateTime.month.toString().padLeft(2,'0')}-${dateTime.day.toString().padLeft(2,'0')}";
+String _formatDate(DateTime? date) {
+  if (date == null) return '-';
+  return "${date.day}/${date.month}/${date.year}";
 }

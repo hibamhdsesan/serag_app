@@ -18,5 +18,15 @@ class PublicThekrBloc extends Bloc<PublicThekrEvent, PublicThekrState> {
         emit(publicThekrError(" لا يمكن تحميل البيانات"));
       }
     });
+
+    on<AddThekrEvent>((event, emit) async {
+      emit(PublicThekrLoading());
+      try {
+        final thekrList = await thekrService.fetchThekrList();
+        emit(PublicThekrAdded());
+      } catch (e) {
+        emit(publicThekrError(" لا يمكن تحميل البيانات"));
+      }
+    });
   }
 }

@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
       splitScreenMode: true,
       builder: (_, child) {
         return MaterialApp(
-          home: ThekrPAge(),
+          home: KhetmaPAge(),
         );
       },
     );

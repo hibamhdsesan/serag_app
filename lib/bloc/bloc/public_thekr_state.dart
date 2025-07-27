@@ -11,8 +11,10 @@ final class publicThekrLoaded extends PublicThekrState {
   List<ThekrModel> thekrList = [];
   publicThekrLoaded(this.thekrList);
 }
+class PublicThekrAdded extends PublicThekrState {}
 
 final class publicThekrError extends PublicThekrState {
   final String message;
   publicThekrError(this.message);
 }
+

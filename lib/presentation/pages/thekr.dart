@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,10 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serag_app/bloc/bloc/public_thekr_bloc.dart';
 import 'package:serag_app/core/constants/app_colors.dart';
 import 'package:serag_app/core/constants/app_texts.dart';
-import 'package:serag_app/settings/helper.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:flutter/material.dart' show MaterialStateProperty;
-
+import 'package:serag_app/presentation/pages/added.dart';
 class ThekrPAge extends StatefulWidget {
   const ThekrPAge({super.key});
 
@@ -32,10 +30,11 @@ class _ThekrPAgeState extends State<ThekrPAge> {
     dateRangeController.dispose();
     super.dispose();
   }
-String _formatDate(DateTime? date) {
-  if (date == null) return '-';
-  return "${date.day}/${date.month}/${date.year}";
-}
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return '-';
+    return "${date.day}/${date.month}/${date.year}";
+  }
 
   @override
   void initState() {
@@ -91,104 +90,122 @@ String _formatDate(DateTime? date) {
                 child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25),
                     child: BlocBuilder<PublicThekrBloc, PublicThekrState>(
-  builder: (context, state) {
-    if (state is PublicThekrLoading) {
-      return Center(child: CircularProgressIndicator());
-    } else if (state is publicThekrLoaded) {
-      final thekrList = state.thekrList;
+                      builder: (context, state) {
+                        if (state is PublicThekrLoading) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (state is publicThekrLoaded) {
+                          final thekrList = state.thekrList;
 
-      return ListView.builder(
-        itemCount: thekrList.length, 
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.only(bottom: 24.h),
-            width: 309.w,
-            height: 214.h,
-            decoration: BoxDecoration(
-              color: AppColors.box,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  height: 102.h,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            thekrList[index].thekrType!,
-                            style: TextStyle(fontSize: 25.sp),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 9, right: 5),
-                        child: Image.asset("images/star.png"),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: Divider(
-                    height: 1.h,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("تاريخ الانتهاء"),
-                            Text(_formatDate(thekrList[index].endDate)),
-                            Text("المفروض"),
-                            Text(thekrList[index].targetCount.toString()),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 9),
-                        child: Image.asset("images/floral8.png"),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 25),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("تاريخ البدء"),
-                            Text(formatNullableDate(thekrList[index].endDate)),
-                            Text("المنجز"),
-                            Text(thekrList[index].completedCount.toString()),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    } else if (state is publicThekrError) {
-      return Center(child: Text(state.message));
-    } else {
-      return Center(child: Text("لا توجد بيانات"));
-    }
-  },
-)
-
-                    )),
+                          return ListView.builder(
+                            itemCount: thekrList.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: EdgeInsets.only(bottom: 24.h),
+                                width: 309.w,
+                                height: 214.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.box,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 102.h,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                thekrList[index].thekrType!,
+                                                style:
+                                                    TextStyle(fontSize: 25.sp),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 9, right: 5),
+                                            child:
+                                                Image.asset("images/star.png"),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 15),
+                                      child: Divider(
+                                        height: 1.h,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 16),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text("تاريخ الانتهاء"),
+                                                Text(_formatDate(
+                                                    thekrList[index].endDate)),
+                                                Text("المفروض"),
+                                                Text(thekrList[index]
+                                                    .targetCount
+                                                    .toString()),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 9),
+                                            child: Image.asset(
+                                                "images/floral8.png"),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 25),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text("تاريخ البدء"),
+                                                Text(_formatDate(
+                                                    thekrList[index].endDate)),
+                                                Text("المنجز"),
+                                                Text(thekrList[index]
+                                                    .completedCount
+                                                    .toString()),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        } else if (state is publicThekrError) {
+                          return Center(child: Text(state.message));
+                        } else {
+                          return Center(child: Text("لا توجد بيانات"));
+                        }
+                      },
+                    ))),
           ],
         ),
       ),
@@ -211,7 +228,7 @@ String _formatDate(DateTime? date) {
                       ),
                       isScrollControlled: true,
                       builder: (context) {
-                        double localCurrentValue = currentValue; 
+                        double localCurrentValue = currentValue;
 
                         return StatefulBuilder(
                           builder: (BuildContext context,
@@ -379,19 +396,34 @@ String _formatDate(DateTime? date) {
                                     SizedBox(
                                       height: 26.h,
                                     ),
-                                    Container(
-                                      width: 296.w,
-                                      height: 42.h,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: AppColors.box,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "إضافة",
-                                          style: TextStyle(
-                                              color: AppColors.textButton,
-                                              fontSize: 25.sp),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddedPAge(thekrType: selectedThekrValue,
+      startDate: startDate!,
+      endDate: endDate!,
+      targetCount: currentValue.toInt(),)),
+                                                    ).then((_) {context.read<PublicThekrBloc>().add(FetchthekrEvent());});              
+
+                                      },
+                                      child: Container(
+                                        width: 296.w,
+                                        height: 42.h,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: AppColors.box,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "إضافة",
+                                            style: TextStyle(
+                                                color: AppColors.textButton,
+                                                fontSize: 25.sp),
+                                          ),
                                         ),
                                       ),
                                     ),

@@ -4,7 +4,14 @@ import 'package:serag_app/core/constants/app_colors.dart';
 import 'package:serag_app/core/constants/app_texts.dart';
 
 class AddedPAge extends StatefulWidget {
-  const AddedPAge({super.key});
+   final String thekrType;
+  final DateTime startDate;
+  final DateTime endDate;
+  final int targetCount;
+  const AddedPAge({super.key, required this.thekrType,
+    required this.startDate,
+    required this.endDate,
+    required this.targetCount,});
 
   @override
   State<AddedPAge> createState() => _AddedPAgeState();
