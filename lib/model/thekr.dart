@@ -74,12 +74,12 @@ class ThekrModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      
       'thekrType': thekrType,
       'targetCount': targetCount,
       'completedCount': completedCount,
-      'startDate': startDate?.millisecondsSinceEpoch,
-      'endDate': endDate?.millisecondsSinceEpoch,
+      'startDate': startDate?.toIso8601String(),
+      'endDate': endDate?.toIso8601String(),
       'personCount': personCount,
       'personName': personName,
     };

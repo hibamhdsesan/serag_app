@@ -351,8 +351,8 @@ class _ThekrPAgeState extends State<ThekrPAge> {
                                       child: Slider(
                                         value: localCurrentValue,
                                         min: 0,
-                                        max: 100,
-                                        divisions: 100,
+                                        max: 100000,
+                                        divisions: 1000,
                                         label: localCurrentValue
                                             .round()
                                             .toString(),

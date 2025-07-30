@@ -9,8 +9,9 @@ import 'package:serag_app/presentation/pages/added.dart';
 import 'package:serag_app/presentation/pages/home.dart';
 import 'package:serag_app/presentation/pages/khetma.dart';
 import 'package:serag_app/presentation/pages/privateKhetma.dart';
+import 'package:serag_app/presentation/pages/public_khetma.dart';
 import 'package:serag_app/presentation/pages/splash.dart';
-import 'package:serag_app/presentation/pages/thekr.dart';
+import 'package:serag_app/presentation/pages/public_thekr.dart';
 import 'package:serag_app/service/publicThekr.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -74,7 +75,7 @@ class _MyAppState extends State<MyApp> {
       splitScreenMode: true,
       builder: (_, child) {
         return MaterialApp(
-          home: KhetmaPAge(),
+          home: SplashScreen(),
         );
       },
     );

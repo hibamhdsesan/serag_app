@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:serag_app/bloc/bloc/public_thekr_bloc.dart';
 import 'package:serag_app/core/constants/app_colors.dart';
 import 'package:serag_app/core/constants/app_texts.dart';
+import 'package:serag_app/model/thekr.dart';
+import 'package:share_plus/share_plus.dart';
 
 class AddedPAge extends StatefulWidget {
    final String thekrType;
@@ -126,6 +130,7 @@ class _AddedPAgeState extends State<AddedPAge> {
                               color: Color(0xff9d9d9d),
                             ),
                             child: TextField(
+                              textAlign: TextAlign.end,
                               readOnly: false,
                               controller: personCountController,
                               decoration: InputDecoration(
@@ -139,6 +144,7 @@ class _AddedPAgeState extends State<AddedPAge> {
                         Padding(
                           padding: const EdgeInsets.only(right: 25),
                           child: Text(
+                            
                             " أسماء المشتركين",
                             style: TextStyle(color: AppColors.textTherdly, fontSize: 15.sp),
                           ),
@@ -154,6 +160,7 @@ class _AddedPAgeState extends State<AddedPAge> {
                               color: Color(0xff9d9d9d),
                             ),
                             child: TextField(
+                              textAlign: TextAlign.end,
                               readOnly: false,
                               controller: personNamesController,
                               decoration: InputDecoration(
@@ -163,106 +170,171 @@ class _AddedPAgeState extends State<AddedPAge> {
                           ),
                         ),
                         SizedBox(height: 29.h,),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 25),
-                          child: Text(
-                            " عدد الأجزاء لكل شخص",
-                            style: TextStyle(color: AppColors.textTherdly, fontSize: 15.sp),
-                          ),
-                        ),
+            //             Padding(
+            //               padding: const EdgeInsets.only(right: 25),
+            //               child: Text(
+            //                 " عدد الأجزاء لكل شخص",
+            //                 style: TextStyle(color: AppColors.textTherdly, fontSize: 15.sp),
+            //               ),
+            //             ),
             
-            Padding(
-              padding: const EdgeInsets.only(right: 23),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                   Text(
-                    "1",
-                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
-                  ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 23),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     children: [
+            //        Text(
+            //         "1",
+            //         style: TextStyle(color: Colors.white, fontSize: 16.sp),
+            //       ),
                   
-                  Checkbox(
-                    value: selectedCount == 1,
-                    onChanged: (val) {
-                      setState(() {
-                        selectedCount = 1;
-                      });
-                    },
-                    checkColor: AppColors.box,
-                    fillColor: MaterialStateProperty.all(Color(0xff9d9d9d)),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 23),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                   Text(
-                    "2",
-                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
-                  ),
+            //       Checkbox(
+            //         value: selectedCount == 1,
+            //         onChanged: (val) {
+            //           setState(() {
+            //             selectedCount = 1;
+            //           });
+            //         },
+            //         checkColor: AppColors.box,
+            //         fillColor: MaterialStateProperty.all(Color(0xff9d9d9d)),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 23),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     children: [
+            //        Text(
+            //         "2",
+            //         style: TextStyle(color: Colors.white, fontSize: 16.sp),
+            //       ),
                   
-                  Checkbox(
-                    value: selectedCount == 2,
-                    onChanged: (val) {
-                      setState(() {
-                        selectedCount = 2;
-                      });
-                    },
-                    checkColor: AppColors.box,
-                    fillColor: MaterialStateProperty.all(Color(0xff9d9d9d)),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 23),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                   Text(
-                    "3",
-                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
-                  ),
+            //       Checkbox(
+            //         value: selectedCount == 2,
+            //         onChanged: (val) {
+            //           setState(() {
+            //             selectedCount = 2;
+            //           });
+            //         },
+            //         checkColor: AppColors.box,
+            //         fillColor: MaterialStateProperty.all(Color(0xff9d9d9d)),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 23),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     children: [
+            //        Text(
+            //         "3",
+            //         style: TextStyle(color: Colors.white, fontSize: 16.sp),
+            //       ),
                   
-                  Checkbox(
-                    value: selectedCount == 3,
-                    onChanged: (val) {
-                      setState(() {
-                        selectedCount = 3;
-                      });
-                    },
-                    checkColor: AppColors.box,
-                    fillColor: MaterialStateProperty.all(Color(0xff9d9d9d)),
-                  ),
-                ],
-              ),
-            ),
+            //       Checkbox(
+            //         value: selectedCount == 3,
+            //         onChanged: (val) {
+            //           setState(() {
+            //             selectedCount = 3;
+            //           });
+            //         },
+            //         checkColor: AppColors.box,
+            //         fillColor: MaterialStateProperty.all(Color(0xff9d9d9d)),
+            //       ),
+            //     ],
+            //   ),
+            // ),
 
             
                 
                 SizedBox(height: 20),
                
-                        Padding(
-                          padding: const EdgeInsets.only(right: 33),
-                          child: Container(
-                            width: 257.w,
-                            height: 42.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColors.box,
-                            ),
-                            child:  Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Icon(Icons.share,color: AppColors.textButton,),
-                      Text("إنشاء و مشاركة",style: TextStyle(color: AppColors.textButton,fontSize: 25.sp),),
-                    ],
-                  ),
-                          ),
-                        ),
+                      
+  Padding(
+  padding: const EdgeInsets.only(right: 33),
+  child: BlocListener<PublicThekrBloc, PublicThekrState>(
+    listener: (context, state) async {
+      if (state is PublicThekrAdded) {
+        final names = personNamesController.text
+            .split(',')
+            .map((e) => e.trim())
+            .where((e) => e.isNotEmpty)
+            .toList();
+
+        final count = int.tryParse(personCountController.text) ?? 0;
+        final int partsPerPerson = (widget.targetCount / count).round();
+
+        final message = names
+            .map((name) => "$name - $partsPerPerson ")
+            .join("\n");
+
+        await Share.share(
+          message,
+          subject: 'تفاصيل الذكر',
+        );
+      } else if (state is publicThekrError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("فشل في إضافة الذكر")),
+        );
+      }
+    },
+    child: GestureDetector(
+      onTap: () {
+        final names = personNamesController.text
+            .split(',')
+            .map((e) => e.trim())
+            .where((e) => e.isNotEmpty)
+            .toList();
+
+        final count = int.tryParse(personCountController.text) ?? 0;
+
+        if (names.length != count || count == 0) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("تأكد من إدخال عدد صحيح من الأشخاص والأسماء")),
+          );
+          return;
+        }
+
+        for (String name in names) {
+          final thekr = ThekrModel(
+            thekrType: widget.thekrType,
+            startDate: widget.startDate,
+            endDate: widget.endDate,
+            targetCount: widget.targetCount,
+            completedCount: 0,
+            personCount: count,
+            personName: name,
+          );
+
+          context.read<PublicThekrBloc>().add(AddThekrEvent(thekr));
+        }
+      },
+      child: Container(
+        width: 257.w,
+        height: 42.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.box,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Icon(Icons.share, color: AppColors.textButton),
+            Text(
+              "إنشاء و مشاركة",
+              style: TextStyle(color: AppColors.textButton, fontSize: 25.sp),
+            ),
+          ],
+        ),
+      ),
+    ),
+  ),
+),
+
+
                       ],
                     ),
                   ),

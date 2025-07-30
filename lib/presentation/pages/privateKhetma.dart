@@ -118,7 +118,7 @@ class _PrivateKhetmaState extends State<PrivateKhetma> {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 35),
                         child: Text(
-                          "ختمة بنية ${widget.purpose}",
+                          "  ${widget.purpose}",
                           style: TextStyle(
                             color: AppColors.textButton,
                             fontSize: 25.sp,
