@@ -45,6 +45,10 @@ dependencies:
   flutter_bloc: ^9.1.1
   share_plus: ^7.1.0
   flutter_riverpod: ^2.6.1
+  flutter_local_notifications: ^18.0.0
+  timezone: ^0.9.4
+  
+  
 
 
 dev_dependencies:

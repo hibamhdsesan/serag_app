@@ -8,6 +8,7 @@ import 'package:serag_app/core/constants/app_texts.dart';
 import 'package:serag_app/model/khetma.dart';
 import 'package:serag_app/model/privateKhetma.dart';
 import 'package:serag_app/presentation/pages/privateKhetma.dart';
+import 'package:serag_app/service/notification_service.dart';
 import 'package:serag_app/service/privateKhetma.dart';
 
 final khetmaListProvider = FutureProvider<List<KhetmaModel>>((ref) async {
@@ -144,12 +145,12 @@ class _KhetmaPAgeState extends ConsumerState<KhetmaPAge> {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 16),
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Text("تاريخ الانتهاء"),
                                           Text(khetma.endDate?.toString().split(" ")[0] ?? "-"),
-                                          Text("النوع"),
-                                          Text(khetma.type),
+                                          // Text("النوع"),
+                                          // Text(khetma.type),
                                         ],
                                       ),
                                     ),
@@ -160,12 +161,12 @@ class _KhetmaPAgeState extends ConsumerState<KhetmaPAge> {
                                     Padding(
                                       padding: const EdgeInsets.only(right: 25),
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Text("تاريخ البدء"),
                                           Text(khetma.startDate?.toString().split(" ")[0] ?? "-"),
-                                          Text("تاريخ الإنشاء"),
-                                          Text(khetma.createdAt.toString().split(" ")[0]),
+                                          // Text("تاريخ الإنشاء"),
+                                          // Text(khetma.createdAt.toString().split(" ")[0]),
                                         ],
                                       ),
                                     ),
@@ -318,6 +319,43 @@ class _KhetmaPAgeState extends ConsumerState<KhetmaPAge> {
   );
 });
 await service.addPrivateParts(parts);
+
+// عرض إشعار بنجاح الإضافة
+await NotificationService().showNotification(
+  id: khetma.id % 2147483647, // لازم أقل من int32
+  title: 'تمت إضافة الختمة',
+  body: 'تمت إضافة ختمة "${khetma.purpose}" بنجاح 🎉',
+);
+
+NotificationService().scheduleNotification(
+  id: 101,
+  title: 'تذكير بالختمة',
+  body: 'لا تنسى قراءة وردك اليوم 📖',
+  delay: Duration(minutes: 1),
+);
+final now = DateTime.now();
+
+// await NotificationService().scheduleOneTimeNotification(
+//   id: 999, // تأكد إنو ID ما بيتكرر
+//   title: 'اختبار إشعار مؤقت',
+//   body: 'هل وصلك هذا الإشعار بعد 10 ثواني؟',
+//   delay: Duration(seconds: 10),
+// );
+
+
+// NotificationService().scheduleDailyKhetmaReminder(
+//   id: khetma.id + 1000,
+//   title: 'تذكير الختمة',
+//   body: 'اقرأ جزءك اليومي من ختمة ${khetma.purpose}',
+//   scheduledTime: now,
+// );
+
+
+
+
+
+
+
 
                             Navigator.pop(context);
                             ref.invalidate(khetmaListProvider);

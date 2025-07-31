@@ -1,28 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:serag_app/bloc/bloc/public_khetma_bloc.dart';
 import 'package:serag_app/core/constants/app_colors.dart';
 import 'package:serag_app/core/constants/app_texts.dart';
-import 'package:serag_app/model/khetma.dart';
-import 'package:serag_app/model/privateKhetma.dart';
-import 'package:serag_app/presentation/pages/privateKhetma.dart';
+import 'package:serag_app/model/publicKhtma.dart';
+import 'package:serag_app/presentation/pages/publicKhetmaAdded.dart';
 import 'package:serag_app/service/privateKhetma.dart';
+import 'package:serag_app/model/privateKhetma.dart';
 
-final khetmaListProvider = FutureProvider<List<KhetmaModel>>((ref) async {
-  final service = KhetmaService();
-  return await service.fetchKhetmas();
-});
-
-class PublicKhetmaPage extends ConsumerStatefulWidget {
+class PublicKhetmaPage extends StatefulWidget {
   const PublicKhetmaPage({super.key});
 
   @override
-  ConsumerState<PublicKhetmaPage> createState() => _PublicKhetmaPageState();
+  State<PublicKhetmaPage> createState() => _PublicKhetmaPageState();
 }
 
-class _PublicKhetmaPageState extends ConsumerState<PublicKhetmaPage> {
+class _PublicKhetmaPageState extends State<PublicKhetmaPage> {
   String selectedKhetmaValue = "";
   DateTime? startDate;
   DateTime? endDate;
@@ -30,6 +24,12 @@ class _PublicKhetmaPageState extends ConsumerState<PublicKhetmaPage> {
 
   final TextEditingController thekrController = TextEditingController();
   final TextEditingController dateRangeController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<PublicKhetmaBloc>().add(FetchKhetmaEvent());
+  }
 
   @override
   void dispose() {
@@ -40,8 +40,6 @@ class _PublicKhetmaPageState extends ConsumerState<PublicKhetmaPage> {
 
   @override
   Widget build(BuildContext context) {
-    final khetmaAsyncValue = ref.watch(khetmaListProvider);
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -63,11 +61,10 @@ class _PublicKhetmaPageState extends ConsumerState<PublicKhetmaPage> {
             SafeArea(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 23),
-                    child: Image(image: AssetImage("images/floral.png")),
+                    child: Image.asset("images/floral.png"),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 18),
@@ -75,7 +72,7 @@ class _PublicKhetmaPageState extends ConsumerState<PublicKhetmaPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 23),
-                    child: Image(image: AssetImage("images/floral2.png")),
+                    child: Image.asset("images/floral2.png"),
                   ),
                 ],
               ),
@@ -83,103 +80,95 @@ class _PublicKhetmaPageState extends ConsumerState<PublicKhetmaPage> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25),
-                child: khetmaAsyncValue.when(
-                  data: (khetmas) => ListView.builder(
-                    itemCount: khetmas.length,
-                    itemBuilder: ((context, index) {
-                      final khetma = khetmas[index];
-                      return GestureDetector(
-                        onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PrivateKhetma(
-          purpose: khetma.purpose,
-          khetmaId: khetma.id, 
-        ),
-      ),
-    );
-  },
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: 24.h),
-                          width: 309.w,
-                          height: 214.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.box,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 102.h,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "  ${khetma.purpose}",
-                                          style: TextStyle(fontSize: 25.sp),
+                child: BlocBuilder<PublicKhetmaBloc, PublicKhetmaState>(
+                  builder: (context, state) {
+                    if (state is PublicKhetmaLoading) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (state is PublicKhetmaLoaded) {
+                      return ListView.builder(
+                        itemCount: state.khetmaList.length,
+                        itemBuilder: (context, index) {
+                          final khetma = state.khetmaList[index];
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 24.h),
+                            width: 309.w,
+                            height: 214.h,
+                            decoration: BoxDecoration(
+                              color: AppColors.box,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 102.h,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "  ${khetma.purpose}",
+                                            style: TextStyle(fontSize: 25.sp),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 9, right: 5),
-                                      child: Image.asset("images/star.png"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                child: Divider(height: 1.h, color: AppColors.textPrimary),
-                              ),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 16),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text("تاريخ الانتهاء"),
-                                          Text(khetma.endDate?.toString().split(" ")[0] ?? "-"),
-                                          Text("النوع"),
-                                          Text(khetma.type),
-                                        ],
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 9, right: 5),
+                                        child: Image.asset("images/star.png"),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 9),
-                                      child: Image.asset("images/floral8.png"),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 25),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text("تاريخ البدء"),
-                                          Text(khetma.startDate?.toString().split(" ")[0] ?? "-"),
-                                          Text("تاريخ الإنشاء"),
-                                          Text(khetma.createdAt.toString().split(" ")[0]),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  child: Divider(height: 1.h, color: AppColors.textPrimary),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 16),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text("تاريخ الانتهاء"),
+                                            Text(khetma.endDate?.toString().split(" ")[0] ?? "-"),
+                                            
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 9),
+                                        child: Image.asset("images/floral8.png"),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 25),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text("تاريخ البدء"),
+                                            Text(khetma.startDate?.toString().split(" ")[0] ?? "-"),
+                                            
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
                       );
-                    }),
-                  ),
-                  loading: () => Center(child: CircularProgressIndicator()),
-                  error: (err, _) => Center(child: Text("حدث خطأ أثناء تحميل الختمات")),
+                    } else if (state is PublicKhetmaError) {
+                      return Center(child: Text(state.message));
+                    } else {
+                      return SizedBox();
+                    }
+                  },
                 ),
               ),
             ),
@@ -290,46 +279,35 @@ class _PublicKhetmaPageState extends ConsumerState<PublicKhetmaPage> {
                         ),
                         SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed: () async {
-                            if (selectedKhetmaValue.isEmpty || startDate == null || endDate == null || selectedType.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("الرجاء تعبئة كل الحقول")),
-                              );
-                              return;
-                            }
+                          onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddedPublicKhetmaPage(
+                                                      type:selectedType ,
+                                                      startDate: startDate!,
+                                                      endDate: endDate!,
+                                                      purpose: selectedKhetmaValue,
 
-                            final khetma = KhetmaModel(
-                              id: DateTime.now().microsecondsSinceEpoch,
-                              purpose: selectedKhetmaValue,
-                              type: selectedType,
-                              createdAt: DateTime.now(),
-                              startDate: startDate,
-                              endDate: endDate,
-                            );
-                            final service = KhetmaService();
-                            await service.addKhetma(khetma);
-                            final parts = List.generate(30, (index) {
-  return PrivateKhetmaModel(
-    id: DateTime.now().microsecondsSinceEpoch + index,
-    khetmaId: khetma.id,
-    partNumber: index + 1,
-    isRead: false,
-    createdAt: DateTime.now(),
-  );
-});
-await service.addPrivateParts(parts);
 
-                            Navigator.pop(context);
-                            ref.invalidate(khetmaListProvider);
-                          },
+
+                                                    )),
+                                                    ).then((_) {context.read<PublicKhetmaBloc>().add(FetchKhetmaEvent());});              
+
+                                      },
                           child: Text("إضافة"),
-                          style: ElevatedButton.styleFrom(minimumSize: Size(296, 44),backgroundColor: AppColors.box),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(296, 44),
+                            backgroundColor: AppColors.box,
+                          ),
                         ),
                       ],
                     ),
                   ),
-              ),);
-              },
+                ),
+              );
+            },
           );
         },
         child: Icon(Icons.add, color: Colors.white, size: 30),

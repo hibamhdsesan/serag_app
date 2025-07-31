@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serag_app/core/constants/app_colors.dart';
 import 'package:serag_app/core/constants/app_texts.dart';
 import 'package:serag_app/presentation/pages/khetma.dart';
+import 'package:serag_app/presentation/pages/public_khetma.dart';
 import 'package:serag_app/presentation/pages/public_thekr.dart';
 
 class HomePage extends StatefulWidget {
@@ -96,117 +97,103 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.only(top: 30),
               child: SizedBox(
                 width: 348.w,
-                height: 270.h,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      width: 348.w,
-                      height: 130.h,
-                      padding: EdgeInsets.symmetric(vertical: 16.h),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // عمود تسبيح مع خياراته تحت الزر مباشرة
+                      Column(
                         children: [
-                          // تسبيح
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    showTasbeehOptions = !showTasbeehOptions;
-                                    showKhatmahOptions = false;
-                                  });
-                                },
-                                child:
-                                    buildMainCircle("images/beads.png", "تسبيح"),
-                              ),
-                            ],
+                          InkWell(
+                            borderRadius: BorderRadius.circular(50),
+                            onTap: () {
+                              setState(() {
+                                showTasbeehOptions = !showTasbeehOptions;
+                                showKhatmahOptions = false;
+                              });
+                            },
+                            child: buildMainCircle("images/beads.png", "تسبيح"),
                           ),
-                          // سورة
-                          Column(
-                            children: [
-                              buildMainCircle("images/quran.png", "سورة"),
-                            ],
-                          ),
-                          // ختمة
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    showKhatmahOptions = !showKhatmahOptions;
-                                    showTasbeehOptions = false;
-                                  });
-                                },
-                                child:
-                                    buildMainCircle("images/series.png", "ختمة"),
-                              ),
-                            ],
-                          ),
+                          if (showTasbeehOptions) ...[
+                            SizedBox(height: 8.h),
+                            InkWell(
+                              borderRadius: BorderRadius.circular(50),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => ThekrPAge()),
+                                );
+                              },
+                              child: buildMainCircle("images/beads.png", "جلسة ذكر"),
+                            ),
+                            SizedBox(height: 8.h),
+                            InkWell(
+                              borderRadius: BorderRadius.circular(50),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => ThekrPAge()),
+                                );
+                              },
+                              child: buildMainCircle("images/beads.png", "مسابقة ذكر"),
+                            ),
+                          ],
                         ],
                       ),
-                    ),
 
-                    // خيارات تسبيح (تحت الدائرة)
-                    if (showTasbeehOptions)
-                      Positioned(
-                        left: 30,
-                        top: 135,
-                        child: Column(
-                          children: [
-                            GestureDetector(
+                      // زر السورة فقط بدون خيارات تحتها
+                      buildMainCircle("images/quran.png", "سورة"),
+
+                      // عمود ختمة مع خياراته تحت الزر مباشرة
+                      Column(
+                        children: [
+                          InkWell(
+                            borderRadius: BorderRadius.circular(50),
+                            onTap: () {
+                              setState(() {
+                                showKhatmahOptions = !showKhatmahOptions;
+                                showTasbeehOptions = false;
+                              });
+                            },
+                            child: buildMainCircle("images/series.png", "ختمة"),
+                          ),
+                          if (showKhatmahOptions) ...[
+                            SizedBox(height: 8.h),
+                            InkWell(
+                              borderRadius: BorderRadius.circular(50),
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (_) => ThekrPAge()),
+                                  MaterialPageRoute(builder: (_) => KhetmaPAge()),
                                 );
                               },
-                              child: buildMainCircle(
-                                  "images/beads.png", "جلسة ذكر"),
+                              child: buildMainCircle("images/series.png", "ختمة خاصة"),
                             ),
                             SizedBox(height: 8.h),
-                            buildMainCircle("images/beads.png", "مسابقة ذكر"),
-                          ],
-                        ),
-                      ),
-
-                    if (showKhatmahOptions)
-                      Positioned(
-                        right: 15,
-                        top: 135,
-                        child: Column(
-                          children: [
-                            GestureDetector(
+                            InkWell(
+                              borderRadius: BorderRadius.circular(50),
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (_) => KhetmaPAge()),
+                                  MaterialPageRoute(builder: (_) => PublicKhetmaPage()),
                                 );
                               },
-                              child: buildMainCircle(
-                                  "images/series.png", "ختمة خاصة"),
-                            ),
-                            SizedBox(height: 8.h),
-                            GestureDetector(
-                              onTap: () {
-                              },
-                              child: buildMainCircle(
-                                  "images/series.png", "ختمة عامة"),
+                              child: buildMainCircle("images/series.png", "ختمة عامة"),
                             ),
                           ],
-                        ),
+                        ],
                       ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
