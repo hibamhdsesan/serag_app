@@ -13,7 +13,6 @@ import 'package:serag_app/presentation/pages/privateKhetma.dart';
 import 'package:serag_app/presentation/pages/public_khetma.dart';
 import 'package:serag_app/presentation/pages/splash.dart';
 import 'package:serag_app/presentation/pages/public_thekr.dart';
-import 'package:serag_app/presentation/pages/test.dart';
 import 'package:serag_app/service/notification_service.dart';
 import 'package:serag_app/service/publicKhtma.dart';
 import 'package:serag_app/service/publicThekr.dart';

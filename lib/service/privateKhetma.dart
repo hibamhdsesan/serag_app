@@ -8,7 +8,6 @@ class KhetmaService {
   final String khetmaTable = 'khetma';
   final String privatePartsTable = 'private_khetma'; 
 
-  // جلب كل الختمات العامة
   Future<List<KhetmaModel>> fetchKhetmas() async {
     final response = await _client
         .from(khetmaTable)

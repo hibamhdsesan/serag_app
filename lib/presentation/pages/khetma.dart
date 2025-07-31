@@ -126,10 +126,61 @@ class _KhetmaPAgeState extends ConsumerState<KhetmaPAge> {
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 9, right: 5),
-                                      child: Image.asset("images/star.png"),
-                                    ),
+
+
+                                   Padding(
+  padding: EdgeInsets.only(top: 9, right: 5),
+  child: Stack(
+    alignment: Alignment.center,
+    children: [
+      Image.asset(
+        "images/star.png",
+        width: 90,
+        height: 90,
+        fit: BoxFit.cover,
+      ),
+      Column(
+        //mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'ختمة',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                Shadow(
+                  blurRadius: 2,
+                  color: Colors.black,
+                  offset: Offset(1, 1),
+                ),
+              ],
+            ),
+          ),
+          // Text(
+          //   khetma.id.toString(),
+          //   style: TextStyle(
+          //     color: Colors.white,
+          //     fontSize: 12,
+          //     shadows: [
+          //       Shadow(
+          //         blurRadius: 2,
+          //         color: Colors.black,
+          //         offset: Offset(1, 1),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+        ],
+      ),
+    ],
+  ),
+),
+
+                                 
+                                 
                                   ],
                                 ),
                               ),
@@ -147,10 +198,12 @@ class _KhetmaPAgeState extends ConsumerState<KhetmaPAge> {
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
-                                          Text("تاريخ الانتهاء"),
-                                          Text(khetma.endDate?.toString().split(" ")[0] ?? "-"),
-                                          // Text("النوع"),
-                                          // Text(khetma.type),
+                                          Text("تاريخ الانتهاء",style: TextStyle(fontWeight: FontWeight.bold),),
+Text(
+  khetma.endDate != null
+      ? '${khetma.startDate!.day}\\${khetma.startDate!.month}\\${khetma.startDate!.year}'
+      : '-',
+style: TextStyle(color: Color(0xfff1ae63)),),                                          
                                         ],
                                       ),
                                     ),
@@ -163,10 +216,13 @@ class _KhetmaPAgeState extends ConsumerState<KhetmaPAge> {
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
-                                          Text("تاريخ البدء"),
-                                          Text(khetma.startDate?.toString().split(" ")[0] ?? "-"),
+                                          Text("تاريخ البدء",style: TextStyle(fontWeight: FontWeight.bold),),
+                                          Text(
+  khetma.startDate != null
+      ? '${khetma.startDate!.day}\\${khetma.startDate!.month}\\${khetma.startDate!.year}'
+      : '-',
+style: TextStyle(color: Color(0xfff1ae63)),),
                                           // Text("تاريخ الإنشاء"),
-                                          // Text(khetma.createdAt.toString().split(" ")[0]),
                                         ],
                                       ),
                                     ),
@@ -213,82 +269,126 @@ class _KhetmaPAgeState extends ConsumerState<KhetmaPAge> {
                       children: [
                         Text("النية", style: TextStyle(color: Colors.white, fontSize: 18)),
                         SizedBox(height: 10),
-                        DropdownButtonFormField<String>(
-                          value: selectedKhetmaValue.isEmpty ? null : selectedKhetmaValue,
-                          decoration: InputDecoration(filled: true, fillColor: Colors.white),
-                          items: AppTexts.khetmaList.map((item) {
-                            return DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(item, textAlign: TextAlign.right),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setModalState(() {
-                              selectedKhetmaValue = value!;
-                              thekrController.text = value;
-                            });
-                          },
+                        Container(
+                          width: 266,
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                       color: AppColors.box,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                          child: DropdownButtonFormField<String>(
+                            value: selectedKhetmaValue.isEmpty ? null : selectedKhetmaValue,
+                            decoration: InputDecoration(filled: true, fillColor: Colors.white),
+                            items: AppTexts.khetmaList.map((item) {
+                              return DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(item, textAlign: TextAlign.right),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setModalState(() {
+                                selectedKhetmaValue = value!;
+                                thekrController.text = value;
+                              });
+                            },
+                          ),
                         ),
                         SizedBox(height: 20),
                         Text("مدة الختمة", style: TextStyle(color: Colors.white, fontSize: 18)),
-                        TextField(
-                          controller: dateRangeController,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            prefixIcon: Icon(Icons.calendar_today),
+                        
+                        Container(
+                          width: 266,
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.box,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                          child: TextField(
+                            controller: dateRangeController,
+                            readOnly: true,
+                             textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              suffixIcon: Icon(Icons.calendar_today), // ✅ الايقونة على اليمين
+                            ),
+                            onTap: () async {
+                              final range = await showDialog<DateTimeRange>(
+                                context: context,
+                                builder: (context) {
+                                  return Center(
+                                    child: FractionallySizedBox(
+                                      widthFactor: 0.9,
+                                      heightFactor: 0.75, // ✅ 3/4 من الشاشة
+                                      child: Material(
+                                        borderRadius: BorderRadius.circular(16),
+                                        child: Center(
+                                          child: DateRangePickerDialog(
+                                            firstDate: DateTime(2023),
+                                            lastDate: DateTime(2030),
+                                            initialDateRange: startDate != null && endDate != null
+                                                ? DateTimeRange(start: startDate!, end: endDate!)
+                                                : null,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                          
+                              if (range != null) {
+                                setModalState(() {
+                                  startDate = range.start;
+                                  endDate = range.end;
+                                  dateRangeController.text =
+                                      '${startDate!.day}-${startDate!.month}-${startDate!.year} | '
+                                      '${endDate!.day}-${endDate!.month}-${endDate!.year}'; // ✅ الشكل المطلوب
+                                });
+                              }
+                            },
                           ),
-                          onTap: () async {
-                            final range = await showDateRangePicker(
-                              context: context,
-                              firstDate: DateTime(2023),
-                              lastDate: DateTime(2030),
-                            );
-                            if (range != null) {
-                              setModalState(() {
-                                startDate = range.start;
-                                endDate = range.end;
-                                dateRangeController.text =
-                                    '${startDate!.day}/${startDate!.month}/${startDate!.year} إلى ${endDate!.day}/${endDate!.month}/${endDate!.year}';
-                              });
-                            }
-                          },
                         ),
+
+                        
+                       
                         SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Row(
-                              children: [
-                                Text("فجرية", style: TextStyle(color: Colors.white)),
-                                Checkbox(
-                                  value: selectedType == "فجرية",
-                                  onChanged: (value) {
-                                    setModalState(() {
-                                      selectedType = value! ? "فجرية" : "عادية";
-                                    });
-                                  },
-                                  fillColor: MaterialStateProperty.all(Colors.white),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text("ذات أولوية", style: TextStyle(color: Colors.white)),
-                                Checkbox(
-                                  value: selectedType == "ذات أولوية",
-                                  onChanged: (value) {
-                                    setModalState(() {
-                                      selectedType = value! ? "ذات أولوية" : "عادية";
-                                    });
-                                  },
-                                  fillColor: MaterialStateProperty.all(Colors.white),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceAround,
+  children: [
+    Row(
+      children: [
+        Text("ذات أولوية", style: TextStyle(color: Colors.white)),
+        Checkbox(
+          value: selectedType == "ذات أولوية",
+          onChanged: (value) {
+            setModalState(() {
+              selectedType = value! ? "ذات أولوية" : "عادية";
+            });
+          },
+          fillColor: MaterialStateProperty.all(Colors.white),
+          checkColor: Colors.green,  // ✅ هنا اللون الأخضر لعلامة الصح
+        ),
+      ],
+    ),
+    Row(
+      children: [
+        Text("فجرية", style: TextStyle(color: Colors.white)),
+        Checkbox(
+          value: selectedType == "فجرية",
+          onChanged: (value) {
+            setModalState(() {
+              selectedType = value! ? "فجرية" : "عادية";
+            });
+          },
+          fillColor: MaterialStateProperty.all(Colors.white),
+          checkColor: Colors.green,  // ✅ اللون الأخضر لعلامة الصح
+        ),
+      ],
+    ),
+  ],
+),
+
                         SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () async {
@@ -320,9 +420,8 @@ class _KhetmaPAgeState extends ConsumerState<KhetmaPAge> {
 });
 await service.addPrivateParts(parts);
 
-// عرض إشعار بنجاح الإضافة
 await NotificationService().showNotification(
-  id: khetma.id % 2147483647, // لازم أقل من int32
+  id: khetma.id % 2147483647, 
   title: 'تمت إضافة الختمة',
   body: 'تمت إضافة ختمة "${khetma.purpose}" بنجاح 🎉',
 );
@@ -360,7 +459,7 @@ final now = DateTime.now();
                             Navigator.pop(context);
                             ref.invalidate(khetmaListProvider);
                           },
-                          child: Text("إضافة"),
+                          child: Text("إضافة",style: TextStyle(color: AppColors.textButton,fontSize: 25.sp),),
                           style: ElevatedButton.styleFrom(minimumSize: Size(296, 44),backgroundColor: AppColors.box),
                         ),
                       ],

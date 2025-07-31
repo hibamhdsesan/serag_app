@@ -107,7 +107,6 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // عمود تسبيح مع خياراته تحت الزر مباشرة
                       Column(
                         children: [
                           InkWell(
@@ -147,10 +146,8 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
 
-                      // زر السورة فقط بدون خيارات تحتها
                       buildMainCircle("images/quran.png", "سورة"),
 
-                      // عمود ختمة مع خياراته تحت الزر مباشرة
                       Column(
                         children: [
                           InkWell(
@@ -189,6 +186,7 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ],
                       ),
+                  
                     ],
                   ),
                 ),

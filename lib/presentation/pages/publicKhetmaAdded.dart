@@ -29,7 +29,7 @@ class _AddedPublicKhetmaPageState extends State<AddedPublicKhetmaPage> {
   TextEditingController personCountController = TextEditingController();
   TextEditingController personNamesController = TextEditingController();
 
-  int? selectedCount; // عدد الأجزاء المختار
+  int? selectedCount; 
 
   @override
   void dispose() {
@@ -148,9 +148,39 @@ class _AddedPublicKhetmaPageState extends State<AddedPublicKhetmaPage> {
                             ),
                           ),
                         ),
+
                         SizedBox(height: 25.h),
 
-                        // عدد الأجزاء لكل شخص (checkboxes)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 25),
+                          child: Text(
+                            "أسماء المشتركين",
+                            style: TextStyle(color: AppColors.textTherdly, fontSize: 15.sp),
+                          ),
+                        ),
+                        SizedBox(height: 20.h),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 25),
+                          child: Container(
+                            width: 258.w,
+                            height: 42.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xff9d9d9d),
+                            ),
+                            child: TextField(
+                              maxLines: null,
+                              textAlign: TextAlign.end,
+                              controller: personNamesController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: 25.h),
                         Padding(
                           padding: const EdgeInsets.only(right: 25),
                           child: Text(
@@ -160,7 +190,6 @@ class _AddedPublicKhetmaPageState extends State<AddedPublicKhetmaPage> {
                         ),
                         SizedBox(height: 10.h),
 
-                        // الخيارات من 1 الى 3 فقط كمثال
                         ...List.generate(3, (index) {
                           int count = index + 1;
                           return Padding(
@@ -187,46 +216,13 @@ class _AddedPublicKhetmaPageState extends State<AddedPublicKhetmaPage> {
                           );
                         }),
 
-                        SizedBox(height: 15.h),
-
-                        // أسماء المشتركين
-                        Padding(
-                          padding: const EdgeInsets.only(right: 25),
-                          child: Text(
-                            "أسماء المشتركين (مفصولة بفواصل)",
-                            style: TextStyle(color: AppColors.textTherdly, fontSize: 15.sp),
-                          ),
-                        ),
-                        SizedBox(height: 20.h),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 25),
-                          child: Container(
-                            width: 258.w,
-                            height: 80.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(0xff9d9d9d),
-                            ),
-                            child: TextField(
-                              maxLines: null,
-                              textAlign: TextAlign.end,
-                              controller: personNamesController,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                              ),
-                            ),
-                          ),
-                        ),
                         SizedBox(height: 29.h),
 
-                        // زر الإنشاء والمشاركة
                         Padding(
                           padding: const EdgeInsets.only(right: 33),
                           child: BlocListener<PublicKhetmaBloc, PublicKhetmaState>(
                             listener: (context, state) async {
                               if (state is PublicKhetmaAdded) {
-                                // إرسال رسالة المشاركة بعد الإضافة
                                 final names = personNamesController.text
                                     .split(',')
                                     .map((e) => e.trim())
@@ -260,7 +256,6 @@ class _AddedPublicKhetmaPageState extends State<AddedPublicKhetmaPage> {
                                 final count = int.tryParse(personCountController.text) ?? 0;
                                 final parts = selectedCount ?? 0;
 
-                                // تحقق من صحة البيانات قبل الإرسال
                                 if (count == 0 || parts == 0 || names.length != count) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text("تأكد من إدخال عدد صحيح من الأشخاص، اختيار عدد الأجزاء، والأسماء")),

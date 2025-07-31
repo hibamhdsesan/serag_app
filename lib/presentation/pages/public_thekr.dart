@@ -127,12 +127,55 @@ class _ThekrPAgeState extends State<ThekrPAge> {
                                               ),
                                             ),
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 9, right: 5),
-                                            child:
-                                                Image.asset("images/star.png"),
-                                          ),
+                                         Padding(
+  padding: EdgeInsets.only(top: 15, right: 5),
+  child: Stack(
+    alignment: Alignment.center,
+    children: [
+      Image.asset("images/star.png",width: 90, 
+        height: 90,
+        fit: BoxFit.cover,),
+      Column(
+        mainAxisSize: MainAxisSize.min,
+         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'جلسة',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,  
+              shadows: [
+                Shadow(
+                  blurRadius: 3,
+                  color: Colors.black54,
+                  offset: Offset(1, 1),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            thekrList[index].id.toString(),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.white70,
+              shadows: [
+                Shadow(
+                  blurRadius: 3,
+                  color: Colors.black54,
+                  offset: Offset(1, 1),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ],
+  ),
+),
+
                                         ],
                                       ),
                                     ),
@@ -158,13 +201,13 @@ class _ThekrPAgeState extends State<ThekrPAge> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Text("تاريخ الانتهاء"),
+                                                Text("تاريخ الانتهاء",style: TextStyle(fontWeight: FontWeight.bold),),
                                                 Text(_formatDate(
-                                                    thekrList[index].endDate)),
-                                                Text("المفروض"),
+                                                    thekrList[index].endDate),style: TextStyle(color: Color(0xfff1ae63)),),
+                                                Text("المفروض",style: TextStyle(fontWeight: FontWeight.bold),),
                                                 Text(thekrList[index]
                                                     .targetCount
-                                                    .toString()),
+                                                    .toString(),style: TextStyle(color: Color(0xfff1ae63)),),
                                               ],
                                             ),
                                           ),
@@ -181,13 +224,13 @@ class _ThekrPAgeState extends State<ThekrPAge> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Text("تاريخ البدء"),
+                                                Text("تاريخ البدء",style: TextStyle(fontWeight: FontWeight.bold),),
                                                 Text(_formatDate(
-                                                    thekrList[index].endDate)),
-                                                Text("المنجز"),
+                                                    thekrList[index].endDate),style: TextStyle(color: Color(0xfff1ae63)),),
+                                                Text("المنجز",style: TextStyle(fontWeight: FontWeight.bold),),
                                                 Text(thekrList[index]
                                                     .completedCount
-                                                    .toString()),
+                                                    .toString(),style: TextStyle(color: Color(0xfff1ae63)),),
                                               ],
                                             ),
                                           ),
@@ -302,40 +345,68 @@ class _ThekrPAgeState extends State<ThekrPAge> {
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: TextField(
-                                        controller: dateRangeController,
-                                        readOnly: true,
-                                        textAlign: TextAlign.right,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          prefixIcon: InkWell(
-                                            onTap: () async {
-                                              final pickedRange =
-                                                  await showDateRangePicker(
-                                                context: context,
-                                                firstDate: DateTime(2023),
-                                                lastDate: DateTime(2030),
-                                              );
-                                              if (pickedRange != null) {
-                                                setModalState(() {
-                                                  startDate = pickedRange.start;
-                                                  endDate = pickedRange.end;
-                                                  dateRangeController.text =
-                                                      '${startDate!.day}/${startDate!.month}/${startDate!.year} إلى ${endDate!.day}/${endDate!.month}/${endDate!.year}';
-                                                });
-                                              }
-                                            },
-                                            child: Icon(Icons.calendar_today),
-                                          ),
-                                        ),
-                                      ),
+                                      child:
+
+ TextField(
+  controller: dateRangeController,
+  readOnly: true,
+   textAlign: TextAlign.center,
+  decoration: InputDecoration(
+    filled: true,
+    fillColor: Colors.white,
+    suffixIcon: Icon(Icons.calendar_today), 
+  ),
+  onTap: () async {
+    final range = await showDialog<DateTimeRange>(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: FractionallySizedBox(
+            widthFactor: 0.9,
+            heightFactor: 0.75,
+            child: Material(
+              borderRadius: BorderRadius.circular(16),
+              child: Center(
+                child: DateRangePickerDialog(
+                  firstDate: DateTime(2023),
+                  lastDate: DateTime(2030),
+                  initialDateRange: startDate != null && endDate != null
+                      ? DateTimeRange(start: startDate!, end: endDate!)
+                      : null,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
+    if (range != null) {
+      setModalState(() {
+        startDate = range.start;
+        endDate = range.end;
+        dateRangeController.text =
+            '${startDate!.day}-${startDate!.month}-${startDate!.year} | '
+            '${endDate!.day}-${endDate!.month}-${endDate!.year}'; 
+      });
+    }
+  },
+),
+
+                        
                                     ),
+
+
                                     SizedBox(height: 20),
                                     Text("العدد المفروض",
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 18)),
+                                   
                                     SliderTheme(
                                       data: SliderTheme.of(context).copyWith(
+                                        activeTrackColor: AppColors.box,
+                                        thumbColor: Color(0xff877e7f),
+                                         //overlayColor :Colors.black.withOpacity(0.1),
                                         showValueIndicator:
                                             ShowValueIndicator.always,
                                         valueIndicatorShape:
@@ -366,6 +437,8 @@ class _ThekrPAgeState extends State<ThekrPAge> {
                                         },
                                       ),
                                     ),
+                                   
+                                   
                                     SizedBox(
                                       height: 26.h,
                                     ),
